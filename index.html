@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Vector Art Generator: Create Logos & Illustrations</title>
+    <meta name="description" content="Unleash your creativity with our AI vector art generator. Describe any image or icon, and watch our AI create stunning, scalable SVG graphics in seconds.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-hover': '#4f46e5',
+                        secondary: '#0ea5e9',
+                        accent: '#f43f5e',
+                        background: '#0f172a',
+                        'background-alt': '#1e293b',
+                        surface: '#1e293b',
+                        'text-primary': '#f8fafc',
+                        'text-secondary': '#cbd5e1',
+                        'text-muted': '#94a3b8',
+                        border: '#334155'
+                    },
+                    fontFamily: {
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        body: ['Inter', 'sans-serif']
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.png"> <!-- Assumption based on best practice -->
+</head>
+<body class="bg-background text-text-primary font-body antialiased overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                    </svg>
+                </div>
+                <span class="font-heading font-bold text-xl tracking-tight">Vector<span class="text-primary">Gen</span></span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#how-it-works" class="text-sm font-medium text-text-secondary hover:text-primary transition-colors">How it Works</a>
+                <a href="#features" class="text-sm font-medium text-text-secondary hover:text-primary transition-colors">Benefits</a>
+                <a href="#gallery" class="text-sm font-medium text-text-secondary hover:text-primary transition-colors">Gallery</a>
+                <a href="#faq" class="text-sm font-medium text-text-secondary hover:text-primary transition-colors">FAQ</a>
+            </nav>
+
+            <div class="hidden md:flex items-center gap-4">
+                <a href="#playground" class="px-6 py-2.5 bg-gradient-to-r from-primary to-secondary hover:from-primary-hover hover:to-primary text-white text-sm font-medium rounded shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:-translate-y-0.5">
+                    Generate Vector Art
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden p-2 text-text-secondary hover:text-white">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="fixed inset-0 bg-background/95 backdrop-blur-xl z-[60] transform translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+            <button id="close-menu-btn" class="absolute top-6 right-6 p-2 text-text-secondary">
+                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <a href="#how-it-works" class="text-xl font-heading font-medium text-text-primary mobile-link">How it Works</a>
+            <a href="#features" class="text-xl font-heading font-medium text-text-primary mobile-link">Benefits</a>
+            <a href="#gallery" class="text-xl font-heading font-medium text-text-primary mobile-link">Gallery</a>
+            <a href="#faq" class="text-xl font-heading font-medium text-text-primary mobile-link">FAQ</a>
+            <a href="#playground" class="px-8 py-3 bg-primary text-white text-lg font-medium rounded mobile-link">Generate Now</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+            <!-- Background Image with Overlay -->
+            <div class="absolute inset-0 z-0">
+                <img src="images/hero-bg.jpg" alt="Blueprint background" class="w-full h-full object-cover opacity-20">
+                <div class="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background"></div>
+                <!-- Dot Grid Overlay -->
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#6366f1 1px, transparent 1px); background-size: 30px 30px;"></div>
+            </div>
+
+            <!-- Canvas Animation -->
+            <canvas id="hero-canvas" class="absolute inset-0 z-10 w-full h-full pointer-events-none"></canvas>
+
+            <!-- Content -->
+            <div class="container mx-auto px-6 relative z-20 text-center">
+                <div class="inline-block px-4 py-1.5 mb-6 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">
+                    <span class="text-xs font-semibold tracking-wide uppercase text-primary">AI Vector Engine v2.0</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-heading font-bold mb-6 leading-tight">
+                    Transform Photos into <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent">Professional Vector Art</span>
+                </h1>
+                <p class="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed">
+                    Transform photos into professional vector art illustrations with clean lines and flat colors. Perfect for logos, icons, and illustrations.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#playground" class="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all hover:scale-105 w-full sm:w-auto">
+                        Generate Vector Art
+                    </a>
+                    <a href="#gallery" class="px-8 py-4 bg-surface border border-border text-text-primary font-medium rounded-lg hover:bg-border/50 transition-all w-full sm:w-auto">
+                        View Examples
+                    </a>
+                </div>
+                
+                <!-- Floating geometric shapes decorative -->
+                <div class="absolute top-1/2 left-10 w-16 h-16 border-2 border-primary/20 rounded-full animate-float hidden lg:block"></div>
+                <div class="absolute bottom-20 right-20 w-12 h-12 border-2 border-secondary/20 rotate-45 animate-float-delayed hidden lg:block"></div>
+            </div>
+        </section>
+
+        <!-- Playground Section -->
+        <section id="playground" class="section-padding bg-surface border-y border-border relative">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">AI Vector Art Generator</h2>
+                    <p class="text-text-secondary max-w-2xl mx-auto">Experience the future of design. Generate unique AI vector art perfect for any project. Download high-resolution, layered SVG files ready for immediate use.</p>
+                </div>
+
+                <!-- Tool Interface -->
+                <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                    <!-- Upload Column -->
+                    <div class="bg-background rounded-xl p-6 border border-border shadow-2xl relative overflow-hidden group">
+                        <!-- Top Bar -->
+                        <div class="flex items-center justify-between mb-4 border-b border-border pb-4">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <span class="text-xs font-mono text-text-muted">SOURCE IMAGE</span>
+                        </div>
+
+                        <!-- Upload Zone -->
+                        <div id="upload-zone" class="border-2 border-dashed border-border hover:border-primary transition-colors rounded-lg h-[400px] flex flex-col items-center justify-center relative bg-background-alt/50 cursor-pointer">
+                            <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*">
+                            
+                            <div id="upload-prompt" class="text-center p-6">
+                                <div class="w-16 h-16 rounded-full bg-surface border border-border flex items-center justify-center mx-auto mb-4 text-primary">
+                                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <p class="text-lg font-medium text-text-primary mb-2">Drop your image here</p>
+                                <p class="text-sm text-text-muted">or click to browse</p>
+                            </div>
+                            
+                            <img id="preview-image" class="hidden absolute inset-2 w-[calc(100%-1rem)] h-[calc(100%-1rem)] object-contain rounded bg-black/20" alt="Preview">
+                        </div>
+                        
+                        <div class="mt-6 flex justify-end">
+                             <button id="generate-btn" class="w-full py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded shadow-lg shadow-primary/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" disabled>
+                                <span>Generate Vector Art</span>
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Result Column -->
+                    <div class="bg-background rounded-xl p-6 border border-border shadow-2xl relative overflow-hidden">
+                        <!-- Top Bar -->
+                        <div class="flex items-center justify-between mb-4 border-b border-border pb-4">
+                            <span class="text-xs font-mono text-text-muted">VECTOR OUTPUT</span>
+                            <div class="flex gap-2 text-text-muted">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                            </div>
+                        </div>
+
+                        <!-- Result Display -->
+                        <div id="result-container" class="border border-border rounded-lg h-[400px] flex items-center justify-center bg-[url('images/playground-preview.jpg')] bg-cover bg-center relative group">
+                            <!-- Overlay for empty state/initial -->
+                            <div id="result-placeholder" class="absolute inset-0 bg-background/80 flex items-center justify-center backdrop-blur-sm">
+                                <div class="text-center text-text-muted">
+                                    <p>Vector result will appear here</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Loading State -->
+                            <div id="loading-indicator" class="hidden absolute inset-0 bg-background/90 z-20 flex flex-col items-center justify-center">
+                                <div class="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+                                <p class="text-primary font-mono text-sm animate-pulse">Tracing Paths...</p>
+                            </div>
+
+                            <!-- Final Image -->
+                            <img id="final-result" class="hidden w-full h-full object-contain p-2" alt="Vector Result">
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="mt-6 grid grid-cols-2 gap-4">
+                            <button id="reset-btn" class="py-3 border border-border text-text-secondary rounded hover:bg-surface transition-colors">
+                                Reset
+                            </button>
+                            <button id="download-btn" class="py-3 bg-secondary hover:bg-sky-600 text-white font-bold rounded shadow-lg shadow-secondary/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                Download SVG
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works -->
+        <section id="how-it-works" class="section-padding bg-background-alt relative">
+            <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 40px 40px;"></div>
+            
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">How AI Vector Art Works?</h2>
+                    <div class="h-1 w-20 bg-primary mx-auto rounded"></div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="relative group">
+                        <div class="bg-background border border-border p-8 rounded-xl h-full hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-4 -mt-4 transition-all group-hover:bg-primary/10"></div>
+                            <div class="w-12 h-12 bg-surface border border-border rounded flex items-center justify-center text-primary font-heading font-bold text-xl mb-6 shadow-lg">1</div>
+                            <h3 class="text-xl font-bold mb-3 text-white">Upload Photo</h3>
+                            <p class="text-text-secondary text-sm leading-relaxed">Select & Upload photos from your device to apply AI Vector Art, and make sure uploaded photos must be in high quality with a well-lit background.</p>
+                        </div>
+                        <!-- Connector Line -->
+                        <div class="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-border z-0"></div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative group">
+                        <div class="bg-background border border-border p-8 rounded-xl h-full hover:border-secondary/50 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-secondary/5 rounded-bl-full -mr-4 -mt-4 transition-all group-hover:bg-secondary/10"></div>
+                            <div class="w-12 h-12 bg-surface border border-border rounded flex items-center justify-center text-secondary font-heading font-bold text-xl mb-6 shadow-lg">2</div>
+                            <h3 class="text-xl font-bold mb-3 text-white">Generate Image</h3>
+                            <p class="text-text-secondary text-sm leading-relaxed">Choose the vector art style you want, then click the “Generate Vector Art” button. The AI will instantly analyze your photo and recreate it as a scalable vector graphic with clean lines and solid colors.</p>
+                        </div>
+                        <!-- Connector Line -->
+                        <div class="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-border z-0"></div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative group">
+                        <div class="bg-background border border-border p-8 rounded-xl h-full hover:border-accent/50 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-accent/5 rounded-bl-full -mr-4 -mt-4 transition-all group-hover:bg-accent/10"></div>
+                            <div class="w-12 h-12 bg-surface border border-border rounded flex items-center justify-center text-accent font-heading font-bold text-xl mb-6 shadow-lg">3</div>
+                            <h3 class="text-xl font-bold mb-3 text-white">Download and Edit</h3>
+                            <p class="text-text-secondary text-sm leading-relaxed">Export the final artwork as an SVG or other vector format for unlimited scaling.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid (Why Use) -->
+        <section id="features" class="section-padding bg-background">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Why You’ll Love Our AI Vector Art</h2>
+                    <p class="text-text-secondary max-w-2xl mx-auto">Discover the key benefits that make our AI tool the perfect choice for generating stunning vector art from your photos effortlessly.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="bg-surface border border-border p-6 rounded-lg hover:border-accent transition-all duration-300 group">
+                        <div class="w-10 h-10 mb-4 text-accent">
+                            <svg fill="currentColor" viewBox="0 0 20 20"><path d="M13 7H7v6h6V7z"/><path fill-rule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z" clip-rule="evenodd"/></svg>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 text-text-primary group-hover:text-accent transition-colors">User-Friendly Interface</h3>
+                        <p class="text-text-secondary text-sm">Our simple, intuitive design makes the AI Vector Art tool easy for everyone to use, even without any technical experience.</p>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="bg-surface border border-border p-6 rounded-lg hover:border-accent transition-all duration-300 group">
+                        <div class="w-10 h-10 mb-4 text-accent">
+                            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"/></svg>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 text-text-primary group-hover:text-accent transition-colors">High-Quality Outputs</h3>
+                        <p class="text-text-secondary text-sm">Enjoy professional-grade results with exceptional clarity, detail, and color accuracy in every AI-generated vector art piece.</p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-surface border border-border p-6 rounded-lg hover:border-accent transition-all duration-300 group">
+                        <div class="w-10 h-10 mb-4 text-accent">
+                            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 text-text-primary group-hover:text-accent transition-colors">Free Download & Share</h3>
+                        <p class="text-text-secondary text-sm">Instantly download and share your AI-generated creations at no cost, without the need for sign-ups or extra steps.</p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="bg-surface border border-border p-6 rounded-lg hover:border-accent transition-all duration-300 group">
+                        <div class="w-10 h-10 mb-4 text-accent">
+                            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 text-text-primary group-hover:text-accent transition-colors">Instant Results</h3>
+                        <p class="text-text-secondary text-sm">Upload your photo and get AI Vector Art style visuals within seconds. No editing or design skills are needed—the AI handles everything.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section-padding bg-background-alt">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Gallery Showcase</h2>
+                    <p class="text-text-secondary">Explore what others have created with our engine.</p>
+                </div>
+
+                <!-- Masonry Layout using CSS Columns -->
+                <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                    <!-- Gallery Item 1 -->
+                    <div class="break-inside-avoid relative group rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-all duration-300">
+                        <img src="images/gallery-result-1.jpg" alt="Vector portrait" class="w-full h-auto transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-mono text-sm">#Portrait #Geometric</span>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Item 2 -->
+                    <div class="break-inside-avoid relative group rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-all duration-300">
+                        <img src="images/gallery-result-2.jpg" alt="City skyline vector" class="w-full h-auto transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-mono text-sm">#Cityscape #Neon</span>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Item 3 -->
+                    <div class="break-inside-avoid relative group rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-all duration-300">
+                        <img src="images/gallery-result-3.jpg" alt="Cat vector illustration" class="w-full h-auto transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-mono text-sm">#Animals #FlatDesign</span>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Item 4 (New) -->
+                    <div class="break-inside-avoid relative group rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-all duration-300">
+                        <img src="images/gallery-result-1.jpg" alt="Vector portrait variant" class="w-full h-auto transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-mono text-sm">#Portrait #Style</span>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Item 5 (New) -->
+                    <div class="break-inside-avoid relative group rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-all duration-300">
+                        <img src="images/gallery-result-2.jpg" alt="City skyline vector variant" class="w-full h-auto transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-mono text-sm">#Urban #Art</span>
+                        </div>
+                    </div>
+
+                    <!-- Extra decorative items to fill grid using same images differently cropped via CSS if needed, but keeping strict to input list. Reusing logic for demonstration. -->
+                    <div class="break-inside-avoid relative group rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-all duration-300 bg-surface h-64 flex items-center justify-center">
+                         <div class="text-center p-6">
+                             <h4 class="text-xl font-bold mb-2">Create Yours</h4>
+                             <p class="text-sm text-text-muted mb-4">Join thousands of creators.</p>
+                             <a href="#playground" class="text-primary hover:text-white underline">Start Now &rarr;</a>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="section-padding relative overflow-hidden">
+            <!-- Background Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-br from-surface to-background z-0"></div>
+            
+            <div class="container mx-auto px-6 relative z-10">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-center mb-16">What People Say about us</h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Review 1 -->
+                    <div class="bg-surface p-8 rounded-tr-3xl rounded-bl-3xl rounded-tl-lg rounded-br-lg border border-border hover:border-primary transition-all shadow-lg">
+                        <div class="flex text-yellow-500 mb-4">★★★★★</div>
+                        <p class="text-text-secondary mb-6 italic">"This AI is a game-changer for my projects. The vector outputs are clean and incredibly easy to edit."</p>
+                        <div>
+                            <p class="font-bold text-white">Olivia</p>
+                            <p class="text-xs text-primary uppercase tracking-wider">Digital Artist</p>
+                        </div>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="bg-surface p-8 rounded-tr-3xl rounded-bl-3xl rounded-tl-lg rounded-br-lg border border-border hover:border-secondary transition-all shadow-lg transform md:-translate-y-4">
+                        <div class="flex text-yellow-500 mb-4">★★★★★</div>
+                        <p class="text-text-secondary mb-6 italic">"I'm not a designer, but Max Studio makes it so easy to get cool graphics for my blog. It's super fast and intuitive."</p>
+                        <div>
+                            <p class="font-bold text-white">Elijah</p>
+                            <p class="text-xs text-secondary uppercase tracking-wider">Web user from USA</p>
+                        </div>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="bg-surface p-8 rounded-tr-3xl rounded-bl-3xl rounded-tl-lg rounded-br-lg border border-border hover:border-accent transition-all shadow-lg">
+                        <div class="flex text-yellow-500 mb-4">★★★★★</div>
+                        <p class="text-text-secondary mb-6 italic">"Generating vector assets used to take hours. Now I can create dozens of options in just a few minutes, which is amazing for my workflow."</p>
+                        <div>
+                            <p class="font-bold text-white">Stella</p>
+                            <p class="text-xs text-accent uppercase tracking-wider">Motion Designer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="section-padding bg-background-alt">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-center mb-12">Frequently Asked Questions</h2>
+                
+                <div class="space-y-4">
+                    <!-- FAQ 1 -->
+                    <div class="faq-item border border-border rounded-lg bg-surface overflow-hidden transition-colors duration-300">
+                        <button class="faq-btn w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none">
+                            <span class="font-medium text-lg">How long does it take to apply the AI Vector Art effect?</span>
+                            <span class="icon text-primary text-2xl font-light transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-6 text-text-secondary leading-relaxed border-t border-border/50 pt-4">
+                                The processing time depends on the complexity and size of your uploaded image. However, our AI algorithms are highly optimized for speed, ensuring you receive your transformed image much faster than with competing tools. Most conversions are completed within seconds.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="faq-item border border-border rounded-lg bg-surface overflow-hidden transition-colors duration-300">
+                        <button class="faq-btn w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none">
+                            <span class="font-medium text-lg">Is this AI Vector Art tool free to use?</span>
+                            <span class="icon text-primary text-2xl font-light transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-6 text-text-secondary leading-relaxed border-t border-border/50 pt-4">
+                                Yes, it is! When you sign up for a free account on our website, we provide you with complimentary credits. You can use these credits to try the AI Vector Art effect and explore other creative tools we offer.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="faq-item border border-border rounded-lg bg-surface overflow-hidden transition-colors duration-300">
+                        <button class="faq-btn w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none">
+                            <span class="font-medium text-lg">Are my uploaded photos safe and private?</span>
+                            <span class="icon text-primary text-2xl font-light transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-6 text-text-secondary leading-relaxed border-t border-border/50 pt-4">
+                                Absolutely. We take your privacy very seriously. Your images are uploaded over a secure connection, used only for the purpose of generating your AI artwork, and are not shared with any third parties. They are automatically deleted from our servers after a short period.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="faq-item border border-border rounded-lg bg-surface overflow-hidden transition-colors duration-300">
+                        <button class="faq-btn w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none">
+                            <span class="font-medium text-lg">What kind of photos work best for this effect?</span>
+                            <span class="icon text-primary text-2xl font-light transform transition-transform duration-300">+</span>
+                        </button>
+                        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-6 text-text-secondary leading-relaxed border-t border-border/50 pt-4">
+                                For the best results, we recommend using clear, well-lit photos with a distinct subject. Portraits, pet photos, landscapes, and product images tend to work exceptionally well. High-contrast images often produce a more dramatic and defined vector look.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Band -->
+        <section class="py-16 bg-gradient-to-r from-primary to-secondary text-white text-center">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-heading font-bold mb-6">Ready to Vectorize Your World?</h2>
+                <a href="#playground" class="inline-block px-10 py-4 bg-white text-primary font-bold text-lg rounded-full shadow-2xl hover:scale-105 transition-transform">
+                    Start Creating Now
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-surface border-t border-accent pt-16 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center gap-2 mb-4 md:mb-0">
+                    <div class="w-8 h-8 rounded bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                        </svg>
+                    </div>
+                    <span class="font-heading font-bold text-xl tracking-tight text-white">Vector<span class="text-primary">Gen</span></span>
+                </div>
+                <div class="text-text-secondary text-sm">
+                    &copy; 2023 VectorGen AI. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
